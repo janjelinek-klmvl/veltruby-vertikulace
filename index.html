@@ -425,6 +425,295 @@
       letter-spacing: 0.1em;
     }
 
+    /* ── LAWN PROFILE ── */
+    .profile-eyebrow {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .profile-fields {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .profile-size-block {
+      border-top: 2px solid var(--text);
+      padding-top: 20px;
+    }
+    .profile-size-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .profile-size-wrap { display: flex; align-items: baseline; gap: 10px; }
+    .profile-size-input {
+      font-family: var(--mono);
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      width: 140px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid var(--text);
+      color: var(--text);
+      padding: 0 0 4px;
+      outline: none;
+      -moz-appearance: textfield;
+    }
+    .profile-size-input::-webkit-outer-spin-button,
+    .profile-size-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .profile-size-input:focus { border-bottom-color: var(--accent-ready); }
+    .profile-size-unit {
+      font-family: var(--mono);
+      font-size: 18px;
+      color: var(--muted);
+    }
+    .profile-size-hint {
+      font-size: 13px;
+      font-style: italic;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .condition-block {
+      border-top: 2px solid var(--text);
+      padding-top: 20px;
+    }
+    .condition-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .condition-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      cursor: pointer;
+    }
+    .cond-tile {
+      background: var(--bg);
+      padding: 16px 14px 14px;
+      user-select: none;
+      transition: background 0.1s;
+    }
+    .cond-tile:hover { background: #ece8de; }
+    .cond-tile.selected { background: var(--text); color: var(--bg); }
+    .cond-tile-num {
+      font-family: var(--mono);
+      font-size: 8px;
+      opacity: 0.4;
+      letter-spacing: 0.15em;
+      margin-bottom: 7px;
+    }
+    .cond-tile-name {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 5px;
+    }
+    .cond-tile-desc {
+      font-size: 11px;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .cond-tile.selected .cond-tile-desc { color: rgba(242,237,227,0.6); }
+
+    /* profile summary strip */
+    .profile-summary {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      margin-bottom: 40px;
+    }
+    .ps-cell { background: var(--bg); padding: 20px 18px; }
+    .ps-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .ps-value {
+      font-family: var(--mono);
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .ps-note { font-size: 12px; font-style: italic; color: var(--muted); }
+
+    /* ── RECOMMENDATIONS ── */
+    .recs-eyebrow {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .recs-header-block { margin-bottom: 36px; }
+    .recs-headline {
+      font-size: clamp(32px, 5vw, 54px);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .recs-sub {
+      font-size: 19px;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 540px;
+    }
+
+    /* timeline */
+    .recs-timeline { margin: 0 0 40px; }
+    .recs-tl-label {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .recs-tl-track {
+      display: flex;
+      height: 10px;
+      gap: 2px;
+      margin-bottom: 6px;
+    }
+    .recs-tl-seg {
+      flex: 1;
+      background: var(--rule);
+      border-radius: 1px;
+    }
+    .recs-tl-seg.window     { background: #b5c9a8; }
+    .recs-tl-seg.now        { background: var(--text); flex: 1.5; }
+    .recs-tl-seg.now-window { background: var(--accent-ready); flex: 1.5; }
+    .recs-tl-months { display: flex; gap: 2px; }
+    .recs-tl-month {
+      flex: 1;
+      font-family: var(--mono);
+      font-size: 7px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .recs-tl-month.now, .recs-tl-month.now-window { color: var(--text); font-weight: 700; }
+    .recs-tl-legend {
+      display: flex;
+      gap: 20px;
+      margin-top: 8px;
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+    .recs-tl-leg-item { display: flex; align-items: center; gap: 6px; }
+    .recs-tl-swatch {
+      display: inline-block;
+      width: 16px;
+      height: 8px;
+      border-radius: 1px;
+    }
+    .recs-tl-swatch.window { background: #b5c9a8; }
+    .recs-tl-swatch.now    { background: var(--text); }
+
+    /* rec cards */
+    .recs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+    .rec-card {
+      background: var(--bg);
+      padding: 32px 28px;
+    }
+    .rec-icon-wrap {
+      margin-bottom: 14px;
+      color: var(--text);
+      opacity: 0.65;
+    }
+    .rec-cat {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .rec-headline {
+      font-size: 21px;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .rec-body {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+    .rec-list { list-style: none; margin: 0; padding: 0; }
+    .rec-item {
+      display: flex;
+      gap: 10px;
+      padding: 6px 0;
+      border-top: 1px solid var(--rule);
+      align-items: flex-start;
+    }
+    .rec-item-bullet {
+      color: var(--accent-ready);
+      font-family: var(--mono);
+      font-size: 10px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .rec-item-text { font-size: 13.5px; line-height: 1.5; }
+    .rec-steps { display: flex; flex-direction: column; }
+    .rec-step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 7px 0;
+      border-top: 1px solid var(--rule);
+    }
+    .rec-step-num {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      color: var(--accent-ready);
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--accent-ready);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      letter-spacing: 0;
+    }
+    .rec-step-text { font-size: 13.5px; line-height: 1.5; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 620px) {
       .page { padding: 36px 24px 80px; }
@@ -433,6 +722,10 @@
       .temp-row { grid-template-columns: 1fr 1fr; }
       .temp-row .temp-cell:last-child { display: none; }
       .conditions { grid-template-columns: 1fr 1fr; }
+      .profile-fields { grid-template-columns: 1fr; gap: 28px; }
+      .condition-grid { grid-template-columns: repeat(2, 1fr); }
+      .profile-summary { grid-template-columns: repeat(2, 1fr); }
+      .recs-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -449,6 +742,18 @@
   const LAT  = 50.061;
   const LON  = 15.167;
   const LOC  = 'Veltruby, Kolín';
+
+  /* ── lawn profile state ── */
+  let g_lawnSize      = 50;
+  let g_lawnCondition = 'decent';
+  let g_v, g_lawnTemp, g_rain3;
+
+  const CONDITIONS = [
+    { id: 'pristine', name: 'Pristine',    desc: 'Envy of the street. Light touch-up only.',               seedRate: 10, passes: 1 },
+    { id: 'decent',   name: 'Decent',      desc: 'Functional. A few thin patches. The lawn equivalent of fine.', seedRate: 15, passes: 1 },
+    { id: 'rough',    name: 'Rough',       desc: 'Moss has opinions. Bare patches have moved in.',          seedRate: 25, passes: 2 },
+    { id: 'rescue',   name: 'Full rescue', desc: 'It\'s complicated. This lawn has been through things.',   seedRate: 35, passes: 2 },
+  ];
 
   /* ── helpers ── */
   function pad(n) { return String(n).padStart(2,'0'); }
@@ -641,10 +946,371 @@
       </div>`;
   }
 
+  /* ── profile calculator ── */
+  function calcProfile(size, conditionId) {
+    const cond    = CONDITIONS.find(c => c.id === conditionId) || CONDITIONS[1];
+    const seedG   = Math.round(size * cond.seedRate);
+    const fertG   = Math.round(size * 30);
+    const seedBags = Math.ceil(seedG / 500);
+    const fertBags = Math.ceil(fertG / 2000);
+    const fertKg  = (fertG / 1000).toFixed(1);
+    const timeMin = Math.round(size * (cond.passes * 0.5 + 0.4));
+    const h = Math.floor(timeMin / 60), m = timeMin % 60;
+    const timeStr = h > 0 ? (m > 0 ? `~${h}h ${m}m` : `~${h}h`) : `~${timeMin}m`;
+    const seedDisplay = seedG >= 1000 ? `${(seedG / 1000).toFixed(1)} kg` : `${seedG} g`;
+    return { cond, seedG, seedBags, fertG, fertKg, fertBags, timeStr, seedDisplay };
+  }
+
+  /* ── recommendations ── */
+  function buildRecommendationsHTML(v, lawnTemp, rain3, lawnSize, lawnCondition) {
+    const cls  = v.cls;
+    const calc = calcProfile(lawnSize, lawnCondition);
+
+    const headers = {
+      'ready':   { title: 'Right then. Let\'s do this.', sub: 'No more deliberating. Soil is warm, sky is cooperating — what are you waiting for?' },
+      'almost':  { title: 'Nearly there. Don\'t just stand around.', sub: 'The lawn is warming to the idea. Use this window to be criminally well-prepared.' },
+      'too-wet': { title: 'The earth is still processing last week.', sub: 'Heavy recent rainfall has the casting vote. Use the downtime wisely.' },
+      'not-yet': { title: 'The lawn is dreaming. Let it dream.', sub: 'Too cold for action, not too cold for planning. This is your advantage window.' },
+    };
+    const { title, sub } = headers[cls] || headers['not-yet'];
+
+    // seasonal timeline
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const currentMonth = new Date().getMonth();
+    const timelineSegs = MONTHS.map((m, i) => {
+      const isNow    = i === currentMonth;
+      const isWindow = i >= 2 && i <= 4;
+      let sc = '';
+      if (isNow && isWindow) sc = 'now-window';
+      else if (isNow)        sc = 'now';
+      else if (isWindow)     sc = 'window';
+      return `<div class="recs-tl-seg ${sc}" title="${m}"></div>`;
+    }).join('');
+    const monthLabels = MONTHS.map((m, i) => {
+      const isNow    = i === currentMonth;
+      const isWindow = i >= 2 && i <= 4;
+      let sc = '';
+      if (isNow && isWindow) sc = 'now-window';
+      else if (isNow)        sc = 'now';
+      return `<div class="recs-tl-month ${sc}">${m}</div>`;
+    }).join('');
+
+    // card content per verdict
+    const content = {
+      'ready': {
+        prep: {
+          headline: 'Scout the battleground',
+          body: 'A quick walk saves a thousand regrets.',
+          items: [
+            'Mow to 4–5 cm the day before (not same day — stress on stress is cruel)',
+            'Walk with wet shoes. Note where it squelches; mark bare patches.',
+            'Avoid if frost is forecast overnight — thawed soil only, please.',
+            'Check soil is not waterlogged underfoot before you start.',
+          ]
+        },
+        seeds: {
+          headline: 'Have backup ready',
+          body: 'Overseeding after scarification is non-optional.',
+          items: [
+            'Mix: perennial ryegrass + red fescue — 15–20 g/m²',
+            'Shade spots under trees: creeping fescue holds up better',
+            '300–500 g usually covers a typical garden. Grab extra.',
+            'Fill the spreader the night before. Morning-you will be grateful.',
+          ]
+        },
+        tools: {
+          headline: 'The sacred instruments',
+          body: 'Blunt tools make blunt lawns.',
+          items: [
+            'Scarifier — check blades are sharp and tines not bent',
+            'Stiff garden rake — for the (frankly disturbing) thatch haul',
+            'Lawn spreader — calibrate to 20 g/m² before you start',
+            'Wheelbarrow — the thatch volume will surprise you every time',
+          ]
+        },
+        process: {
+          headline: 'The sequence matters',
+          steps: [
+            'Mow short (4–5 cm) — the day before',
+            'Scarify north–south, full pass',
+            'Scarify east–west (the cross-hatch)',
+            'Rake out all debris — every last bit',
+            'Overseed thin and bare areas generously',
+            'Apply slow-release spring fertilizer',
+            'Water gently, then stand back and admire',
+          ]
+        }
+      },
+
+      'almost': {
+        prep: {
+          headline: 'Inspect & note',
+          body: 'Know thy lawn. It is about to go through something.',
+          items: [
+            'Walk the lawn today — map last year\'s moss colonies',
+            'Pre-mow to 5 cm now so you\'re ready when conditions hit',
+            'Check you have a free weekend in the next 5–7 days',
+            'Mentally book two mornings. Blocking time is half the battle.',
+          ]
+        },
+        seeds: {
+          headline: 'Stock up now',
+          body: 'Spring rush depletes garden centre shelves fast.',
+          items: [
+            'Perennial ryegrass + red fescue mix (15–20 g/m²) — grab it',
+            '300–500 g for a typical garden; buy a bit extra',
+            'Store in a cool, dry place — not the petrol-scented shed',
+            'Check expiry date. Yes, seed expires. Yes, yours might.',
+          ]
+        },
+        tools: {
+          headline: 'Service window',
+          body: 'Five minutes now saves an hour of cursing later.',
+          items: [
+            'Sharpen scarifier blades — even a basic file does the job',
+            'Check tines: bent ones tear turf, not thatch. Different problem.',
+            'Calibrate spreader — test with sand on a tarp first',
+            'Fuel up or charge the machine. You\'d be surprised how often.',
+          ]
+        },
+        process: {
+          headline: 'Draft your plan',
+          steps: [
+            'Decide: one scarification pass or two perpendicular?',
+            'Sketch problem zones — moss, bare patches, wet corners',
+            'Pre-mow to 5 cm in the next 1–2 days',
+            'Block out 2–3 hours when forecast stays dry',
+            'Sequence when you go: Scarify → Rake → Overseed → Fertilize → Water',
+          ]
+        }
+      },
+
+      'too-wet': {
+        prep: {
+          headline: 'Drain & observe',
+          body: 'Saturated soil compacts. Compaction is not a minor inconvenience.',
+          items: [
+            'Stay off the lawn — every footstep compresses soggy soil',
+            'Light forking of pooling areas helps drainage (don\'t overdo it)',
+            'Recheck in 48 hours — soil drains faster than pessimists expect',
+            'Thumb test: press 2 cm in — firm, not spongy = proceed',
+          ]
+        },
+        seeds: {
+          headline: 'Keep your powder dry',
+          body: 'Seeds and excess moisture are not friends.',
+          items: [
+            'Store seed in a sealed container, away from humidity',
+            'Pre-wetted seed in soggy conditions = mould. Not the plan.',
+            'Check that back-of-the-shed bag for the expiry date',
+            'You have time. Use it to confirm you have enough for the area.',
+          ]
+        },
+        tools: {
+          headline: 'Productive waiting',
+          body: 'The rain that delays you is also rusting your kit.',
+          items: [
+            'Sharpen and clean scarifier blades while you have a moment',
+            'Oil moving parts — damp air is not your equipment\'s friend',
+            'Check fertilizer stock — less fun to discover mid-job',
+            'Mentally walk through the sequence. Preparation is free.',
+          ]
+        },
+        process: {
+          headline: 'Know your trigger',
+          steps: [
+            'Wait for 3-day rainfall to drop below 15 mm',
+            'Do the squelch test — no squelch means go',
+            'Pre-mow to 5 cm the morning of (or day before)',
+            'Proceed: Scarify → Rake → Overseed → Fertilize → Water',
+            'No rain in the 48 hours after seeding, ideally',
+          ]
+        }
+      },
+
+      'not-yet': {
+        prep: {
+          headline: 'Map your territory',
+          body: 'Future-you will thank present-you for taking notes.',
+          items: [
+            'Photograph or sketch the lawn — note moss, thin patches, drainage',
+            'Your window: soil above 10 °C, dry 3+ days — typically March–May',
+            'Early spring is also fine time to apply lime if pH is off',
+            'Block two mornings in your spring calendar. Tentatively. Optimistically.',
+          ]
+        },
+        seeds: {
+          headline: 'Choose wisely',
+          body: 'Not all grass is created equal. Especially in Bohemia.',
+          items: [
+            'Sunny areas: perennial ryegrass — fast germination, wear-resistant',
+            'Shade & dry spots: creeping red fescue — slow but persistent',
+            'Patchy, relaxed lawn: meadow mix — lower maintenance, better vibes',
+            'Order now. Spring rush is real and shelf stock is finite.',
+          ]
+        },
+        tools: {
+          headline: 'Winter servicing',
+          body: 'Now is peak tool attention season. They deserve it.',
+          items: [
+            'Check scarifier tines — replace if worn (usually under €15)',
+            'Sharpen blades if you skipped it last autumn. No judgement.',
+            'Inspect spreader for cracks; replace worn distribution plates',
+            'Buy consumables now — fertilizer and seed before the March rush',
+          ]
+        },
+        process: {
+          headline: 'Learn the sequence',
+          steps: [
+            'Wait for soil to reach 10 °C and stay dry 3+ days',
+            'Mow to 4–5 cm the day before',
+            'Scarify north–south, then east–west (two passes)',
+            'Rake and remove all debris — generously',
+            'Overseed thin areas at 15–20 g/m²',
+            'Apply slow-release spring fertilizer',
+            'Water in, then let weather do the rest',
+          ]
+        }
+      }
+    };
+
+    let c = content[cls] || content['not-yet'];
+
+    // Personalise seed body with exact amounts
+    const seedsCard = {
+      ...c.seeds,
+      body: `For your <strong>${lawnSize}&thinsp;m&sup2;</strong> lawn in <em>${calc.cond.name.toLowerCase()}</em> condition: approximately <strong>${calc.seedDisplay}</strong> (~${calc.seedBags}&thinsp;&times;&thinsp;500&thinsp;g bag${calc.seedBags > 1 ? 's' : ''}). ${c.seeds.body}`,
+    };
+
+    // Adjust scarify steps based on pass count for 'ready' state
+    const processSteps = (cls === 'ready')
+      ? [
+          'Mow short (4–5 cm) — the day before',
+          'Scarify north–south, full pass',
+          ...(calc.cond.passes >= 2 ? ['Scarify east–west (the cross-hatch)'] : []),
+          'Rake out all debris — every last bit',
+          'Overseed thin and bare areas generously',
+          'Apply slow-release spring fertilizer',
+          'Water gently, then stand back and admire',
+        ]
+      : c.process.steps;
+    const processCard = { ...c.process, steps: processSteps };
+
+    // Profile summary strip
+    const profileSummary = `
+      <div class="profile-summary">
+        <div class="ps-cell">
+          <div class="ps-label">Seed needed</div>
+          <div class="ps-value">${calc.seedDisplay}</div>
+          <div class="ps-note">~${calc.seedBags} &times; 500&thinsp;g bag${calc.seedBags > 1 ? 's' : ''}</div>
+        </div>
+        <div class="ps-cell">
+          <div class="ps-label">Fertilizer</div>
+          <div class="ps-value">${calc.fertKg}&thinsp;kg</div>
+          <div class="ps-note">~${calc.fertBags} &times; 2&thinsp;kg bag${calc.fertBags > 1 ? 's' : ''}</div>
+        </div>
+        <div class="ps-cell">
+          <div class="ps-label">Passes</div>
+          <div class="ps-value">${calc.cond.passes}</div>
+          <div class="ps-note">${calc.cond.passes === 1 ? 'Single direction' : 'Cross-hatch'}</div>
+        </div>
+        <div class="ps-cell">
+          <div class="ps-label">Est. time</div>
+          <div class="ps-value">${calc.timeStr}</div>
+          <div class="ps-note">Inc. raking &amp; seeding</div>
+        </div>
+      </div>`;
+
+    const icons = {
+      prep:    `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>`,
+      seeds:   `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C12 6.5 6.5 4 3 5c0 4.5 3.5 7.5 9 7"/><path d="M12 12c0-5.5 5.5-8 9-7-1 4.5-4.5 7.5-9 7"/></svg>`,
+      tools:   `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+      process: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
+    };
+
+    const labels = { prep: 'Preparation', seeds: 'Seeds & Sowing', tools: 'Tools & Kit', process: 'The Process' };
+
+    function card(type, data) {
+      const isProcess = type === 'process';
+      const body      = data.body ? `<div class="rec-body">${data.body}</div>` : '';
+      const itemsHtml = isProcess
+        ? `<div class="rec-steps">${(data.steps || []).map((s, i) =>
+            `<div class="rec-step"><div class="rec-step-num">${i + 1}</div><div class="rec-step-text">${s}</div></div>`
+          ).join('')}</div>`
+        : `<ul class="rec-list">${(data.items || []).map(item =>
+            `<li class="rec-item"><span class="rec-item-bullet">✦</span><span class="rec-item-text">${item}</span></li>`
+          ).join('')}</ul>`;
+      return `
+        <div class="rec-card">
+          <div class="rec-icon-wrap">${icons[type]}</div>
+          <div class="rec-cat">${labels[type]}</div>
+          <div class="rec-headline">${data.headline}</div>
+          ${body}${itemsHtml}
+        </div>`;
+    }
+
+    return `
+      <div class="recs-eyebrow">What to do now</div>
+      <div class="recs-header-block">
+        <div class="recs-headline">${title}</div>
+        <div class="recs-sub">${sub}</div>
+      </div>
+
+      ${profileSummary}
+
+      <div class="recs-timeline">
+        <div class="recs-tl-label">Seasonal context &mdash; typical scarification window, Central Bohemia</div>
+        <div class="recs-tl-track">${timelineSegs}</div>
+        <div class="recs-tl-months">${monthLabels}</div>
+        <div class="recs-tl-legend">
+          <span class="recs-tl-leg-item"><span class="recs-tl-swatch window"></span> Optimal window (Mar–May)</span>
+          <span class="recs-tl-leg-item"><span class="recs-tl-swatch now"></span> Today</span>
+        </div>
+      </div>
+
+      <div class="recs-grid">
+        ${card('prep', c.prep)}
+        ${card('seeds', seedsCard)}
+        ${card('tools', c.tools)}
+        ${card('process', processCard)}
+      </div>
+    `;
+  }
+
+  /* ── profile section ── */
+  function buildProfileSectionHTML() {
+    const condTiles = CONDITIONS.map((c, i) =>
+      `<div class="cond-tile${g_lawnCondition === c.id ? ' selected' : ''}" data-cond="${c.id}">
+        <div class="cond-tile-num">0${i + 1}</div>
+        <div class="cond-tile-name">${c.name}</div>
+        <div class="cond-tile-desc">${c.desc}</div>
+      </div>`
+    ).join('');
+
+    return `
+      <div class="profile-eyebrow">Your lawn</div>
+      <div class="profile-fields">
+        <div class="profile-size-block">
+          <div class="profile-size-label">Lawn size</div>
+          <div class="profile-size-wrap">
+            <input type="number" id="lawn-size" class="profile-size-input"
+              value="${g_lawnSize}" min="1" max="9999" step="5">
+            <span class="profile-size-unit">m&sup2;</span>
+          </div>
+          <div class="profile-size-hint">Total area to be treated</div>
+        </div>
+        <div class="condition-block">
+          <div class="condition-label">Current condition</div>
+          <div class="condition-grid" id="condition-grid">${condTiles}</div>
+        </div>
+      </div>`;
+  }
+
   /* ── render ── */
   function render([raw, fcRaw]) {
     const { days, lawnTemp, avgAir, rain3, rain14 } = process(raw);
     const v = verdict(lawnTemp, rain3);
+    g_v = v; g_lawnTemp = lawnTemp; g_rain3 = rain3;
     const [hl1, hl2] = wittyLine(v.cls, lawnTemp, rain3);
     const fcDays = processForecast(days, fcRaw);
 
@@ -750,6 +1416,18 @@
           </div>
         </section>
 
+        <hr class="rule">
+
+        <section class="profile-section">
+          ${buildProfileSectionHTML()}
+        </section>
+
+        <hr class="rule">
+
+        <div id="recs-output">
+          ${buildRecommendationsHTML(v, lawnTemp, rain3, g_lawnSize, g_lawnCondition)}
+        </div>
+
         <footer class="footer">
           <span>Source: Open-Meteo Archive API</span>
           <span>${rangeStr}</span>
@@ -761,6 +1439,33 @@
     document.title = `${v.word} — Lawn Oracle`;
     document.getElementById('loading').style.display = 'none';
     document.getElementById('app').classList.add('visible');
+    attachProfileListeners();
+  }
+
+  /* ── profile interactivity ── */
+  function attachProfileListeners() {
+    const sizeInput = document.getElementById('lawn-size');
+    const condGrid  = document.getElementById('condition-grid');
+
+    sizeInput.addEventListener('input', () => {
+      const val = parseInt(sizeInput.value) || 0;
+      if (val > 0) {
+        g_lawnSize = val;
+        document.getElementById('recs-output').innerHTML =
+          buildRecommendationsHTML(g_v, g_lawnTemp, g_rain3, g_lawnSize, g_lawnCondition);
+      }
+    });
+
+    condGrid.addEventListener('click', e => {
+      const tile = e.target.closest('.cond-tile');
+      if (!tile) return;
+      g_lawnCondition = tile.dataset.cond;
+      condGrid.querySelectorAll('.cond-tile').forEach(t =>
+        t.classList.toggle('selected', t === tile)
+      );
+      document.getElementById('recs-output').innerHTML =
+        buildRecommendationsHTML(g_v, g_lawnTemp, g_rain3, g_lawnSize, g_lawnCondition);
+    });
   }
 
   function renderError(err) {
