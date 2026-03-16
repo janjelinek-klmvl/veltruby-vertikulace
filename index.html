@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lawn Oracle — Veltruby</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f2ede3;
+      --text: #111111;
+      --accent-ready: #1a3c18;
+      --accent-notyet: #3c1818;
+      --accent-almost: #3c2c14;
+      --muted: #6b6355;
+      --rule: #ccc4b4;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --mono: 'Space Mono', monospace;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--serif);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── LOADING ── */
+    #loading {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      background: var(--bg);
+      z-index: 10;
+    }
+    #loading .l-title {
+      font-size: 52px;
+      font-weight: 300;
+      font-style: italic;
+    }
+    #loading .l-sub {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      animation: blink 1.6s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+    /* ── WRAPPER ── */
+    #app { display: none; }
+    #app.visible { display: block; }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 56px 48px 100px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 32px;
+      margin-bottom: 72px;
+    }
+    .header-vert {
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 4px 0;
+      align-self: start;
+    }
+    .header-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .header-title {
+      font-size: clamp(64px, 11vw, 112px);
+      font-weight: 300;
+      line-height: 0.88;
+      letter-spacing: -0.025em;
+      margin-bottom: 20px;
+    }
+    .header-title em {
+      font-style: italic;
+    }
+    .header-location {
+      font-size: 19px;
+      font-style: italic;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+
+    /* ── DIVIDER ── */
+    .rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 56px 0;
+    }
+    .rule-heavy {
+      border: none;
+      border-top: 2px solid var(--text);
+      margin: 0 0 40px;
+    }
+
+    /* ── TEMPERATURE ROW ── */
+    .temp-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+    }
+    .temp-cell {
+      padding: 28px 0;
+      border-top: 2px solid var(--text);
+      padding-right: 32px;
+    }
+    .temp-cell + .temp-cell {
+      border-left: 1px solid var(--rule);
+      padding-left: 32px;
+    }
+    .tc-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .tc-value {
+      font-family: var(--mono);
+      font-size: clamp(36px, 5.5vw, 58px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .tc-note {
+      font-size: 13px;
+      font-style: italic;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* ── VERDICT ── */
+    .verdict-section {
+      position: relative;
+      overflow: hidden;
+      padding: 52px 0 48px;
+    }
+    .verdict-ghost {
+      position: absolute;
+      top: 50%;
+      left: -20px;
+      transform: translateY(-50%);
+      font-size: clamp(80px, 18vw, 180px);
+      font-weight: 600;
+      letter-spacing: -0.05em;
+      opacity: 0.04;
+      white-space: nowrap;
+      pointer-events: none;
+      line-height: 1;
+      user-select: none;
+    }
+    .verdict-eyebrow {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .verdict-word {
+      font-size: clamp(88px, 16vw, 168px);
+      font-weight: 600;
+      line-height: 0.82;
+      letter-spacing: -0.04em;
+      margin-bottom: 28px;
+    }
+    .verdict-word.ready    { color: var(--accent-ready); }
+    .verdict-word.almost   { color: var(--accent-almost); }
+    .verdict-word.too-wet  { color: var(--accent-almost); }
+    .verdict-word.not-yet  { color: var(--accent-notyet); }
+    .verdict-reason {
+      font-size: 20px;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 520px;
+    }
+
+    /* ── CHART ── */
+    .chart-section { }
+    .chart-caption {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .chart-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 72px;
+      margin-bottom: 10px;
+    }
+    .bar-unit {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+      position: relative;
+    }
+    .bar {
+      width: 100%;
+      border-radius: 1px 1px 0 0;
+      transition: opacity 0.15s;
+    }
+    .bar:hover { opacity: 0.8; cursor: default; }
+    .bar.cold  { background: #a89080; }
+    .bar.cool  { background: #7a9270; }
+    .bar.warm  { background: var(--accent-ready); }
+    .chart-dates {
+      display: flex;
+      gap: 4px;
+    }
+    .chart-date {
+      flex: 1;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 7.5px;
+      color: var(--muted);
+      line-height: 1.2;
+    }
+    .threshold-line-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--muted);
+      margin-top: 14px;
+      letter-spacing: 0.1em;
+    }
+    .threshold-line-label span {
+      color: var(--accent-ready);
+    }
+
+    /* ── CONDITIONS GRID ── */
+    .conditions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--rule);
+      background: var(--rule);
+      gap: 1px;
+    }
+    .cond {
+      background: var(--bg);
+      padding: 24px 22px;
+    }
+    .cond-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .cond-val {
+      font-family: var(--mono);
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .cond-val .unit {
+      font-size: 0.45em;
+      font-weight: 400;
+      opacity: 0.55;
+      letter-spacing: 0;
+    }
+    .cond-note {
+      font-size: 13px;
+      font-style: italic;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* ── FORECAST ── */
+    .forecast-intro {
+      margin-bottom: 24px;
+    }
+    .forecast-intro-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .forecast-intro-line {
+      font-size: 20px;
+      font-style: italic;
+      color: var(--muted);
+    }
+    .forecast-intro-line strong {
+      font-style: normal;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .forecast-scroll {
+      overflow-x: auto;
+      margin: 0 -2px;
+    }
+    .forecast-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      min-width: 560px;
+      border: 1px solid var(--rule);
+      background: var(--rule);
+      gap: 1px;
+    }
+    .fc-day {
+      background: var(--bg);
+      padding: 20px 16px 18px;
+    }
+    .fc-day.ready {
+      background: #eceee8;
+    }
+    .fc-weekday {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+    .fc-date {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--rule);
+      margin-bottom: 16px;
+    }
+    .fc-lawn {
+      font-family: var(--mono);
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .fc-lawn.warm  { color: var(--accent-ready); }
+    .fc-lawn.cool  { color: var(--accent-almost); }
+    .fc-lawn.cold  { color: var(--muted); }
+    .fc-air {
+      font-size: 12px;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .fc-badge {
+      margin-top: 10px;
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-ready);
+    }
+    .fc-trend {
+      display: inline-block;
+      font-style: normal;
+      font-size: 10px;
+      margin-left: 2px;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 56px;
+      padding-top: 20px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── ERROR ── */
+    .error-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 80px 48px;
+    }
+    .error-wrap .err-title {
+      font-size: 60px;
+      font-weight: 300;
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+    .error-wrap .err-msg {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent-notyet);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 620px) {
+      .page { padding: 36px 24px 80px; }
+      .header { grid-template-columns: 1fr; }
+      .header-vert { display: none; }
+      .temp-row { grid-template-columns: 1fr 1fr; }
+      .temp-row .temp-cell:last-child { display: none; }
+      .conditions { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="l-title">Lawn Oracle</div>
+  <div class="l-sub">Consulting meteorological archives&hellip;</div>
+</div>
+
+<div id="app"></div>
+
+<script>
+  const LAT  = 50.061;
+  const LON  = 15.167;
+  const LOC  = 'Veltruby, Kolín';
+
+  /* ── helpers ── */
+  function pad(n) { return String(n).padStart(2,'0'); }
+  function fmtISO(d) {
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  }
+  function sign(n) { return n >= 0 ? '+' : ''; }
+  function fmtT(n) { return `${sign(n)}${n.toFixed(1)}°`; }
+
+  /* ── fetch ── */
+  async function fetchWeather() {
+    const end   = new Date(); end.setDate(end.getDate() - 1);
+    const start = new Date(end); start.setDate(start.getDate() - 13);
+    const url = [
+      'https://archive-api.open-meteo.com/v1/archive',
+      `?latitude=${LAT}&longitude=${LON}`,
+      `&start_date=${fmtISO(start)}&end_date=${fmtISO(end)}`,
+      `&daily=temperature_2m_max,temperature_2m_min,precipitation_sum`,
+      `&timezone=Europe%2FPrague`
+    ].join('');
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`Open-Meteo API error ${r.status}`);
+    return r.json();
+  }
+
+  async function fetchForecast() {
+    const url = [
+      'https://api.open-meteo.com/v1/forecast',
+      `?latitude=${LAT}&longitude=${LON}`,
+      `&daily=temperature_2m_max,temperature_2m_min,precipitation_sum`,
+      `&timezone=Europe%2FPrague`,
+      `&forecast_days=7`
+    ].join('');
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`Open-Meteo forecast error ${r.status}`);
+    return r.json();
+  }
+
+  /* ── data processing ── */
+  function process(raw) {
+    const days = raw.daily.time.map((date, i) => ({
+      date,
+      tmax : raw.daily.temperature_2m_max[i]  ?? 0,
+      tmin : raw.daily.temperature_2m_min[i]  ?? 0,
+      tmean: ((raw.daily.temperature_2m_max[i] ?? 0) + (raw.daily.temperature_2m_min[i] ?? 0)) / 2,
+      rain : raw.daily.precipitation_sum[i]    ?? 0,
+    }));
+
+    // Weighted 7-day mean (proxy for shallow soil temp — soil lags air by several days)
+    const recent7 = days.slice(-7);
+    const w7 = [1, 1, 2, 3, 4, 5, 6];
+    const wSum7 = w7.reduce((a,b) => a+b, 0);
+    const lawnTemp = recent7.reduce((acc, d, i) => acc + d.tmean * w7[i], 0) / wSum7;
+
+    const avgAir  = days.reduce((a, d) => a + d.tmean, 0) / days.length;
+    const rain3   = days.slice(-3).reduce((a, d) => a + d.rain, 0);
+    const rain14  = days.reduce((a, d) => a + d.rain, 0);
+
+    return { days, lawnTemp, avgAir, rain3, rain14 };
+  }
+
+  /* ── forecast processing ── */
+  function processForecast(historicalDays, fcRaw) {
+    const fcDays = fcRaw.daily.time.map((date, i) => ({
+      date,
+      tmax : fcRaw.daily.temperature_2m_max[i]  ?? 0,
+      tmin : fcRaw.daily.temperature_2m_min[i]  ?? 0,
+      tmean: ((fcRaw.daily.temperature_2m_max[i] ?? 0) + (fcRaw.daily.temperature_2m_min[i] ?? 0)) / 2,
+      rain : fcRaw.daily.precipitation_sum[i]   ?? 0,
+    }));
+
+    // Roll the 7-day buffer forward one day at a time using forecast means
+    const w7    = [1, 1, 2, 3, 4, 5, 6];
+    const wSum7 = w7.reduce((a, b) => a + b, 0);
+    const buffer = historicalDays.slice(-7).map(d => d.tmean);
+
+    return fcDays.map((day, i) => {
+      buffer.push(day.tmean);
+      buffer.shift();
+      const lawnTemp = buffer.reduce((acc, t, j) => acc + t * w7[j], 0) / wSum7;
+      const prev     = i === 0
+        ? historicalDays.slice(-7).reduce((acc, d, j) => acc + d.tmean * w7[j], 0) / wSum7
+        : null; // computed on previous iteration implicitly
+      return { ...day, lawnTemp };
+    });
+  }
+
+  /* ── witty headline ── */
+  function wittyLine(cls, lawnTemp, rain3) {
+    const lines = {
+      'ready': [
+        ['Go forth', 'and scarify.'],
+        ['The earth', 'is willing.'],
+        ['It is', 'time.'],
+        ['Stars aligned,', 'soil warm.'],
+        ['Your lawn called.', 'It\'s ready.'],
+        ['The grass is greener', 'on this side.'],
+      ],
+      'almost': [
+        ['Nearly there.', 'Put the kettle on.'],
+        ['The lawn is warming', 'to the idea.'],
+        ['A few more degrees', 'of separation.'],
+        ['Patience,', 'gardener.'],
+        ['So close you can', 'almost smell it.'],
+        ['The soil', 'considers it.'],
+      ],
+      'too-wet': [
+        ['The earth', 'drinks deeply.'],
+        ['Too much', 'of a good thing.'],
+        ['The puddles', 'have opinions.'],
+        ['The lawn needs', 'a moment to itself.'],
+        ['Wet boots,', 'wrong time.'],
+        ['The soil is still', 'processing.'],
+      ],
+      'not-yet': [
+        ['Winter lingers', 'in the roots.'],
+        ['The lawn dreams', 'of warmer days.'],
+        ['Not today.', 'Not yet.'],
+        ['The earth', 'is still waking.'],
+        ['Back in the shed,', 'for now.'],
+        ['Cold comfort', 'for the impatient.'],
+      ],
+    };
+    // deterministic pick by day-of-year so it stays stable within a day
+    const doy = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+    const pool = lines[cls] || lines['not-yet'];
+    return pool[doy % pool.length];
+  }
+
+  /* ── verdict ── */
+  function verdict(lawnTemp, rain3) {
+    const warm    = lawnTemp >= 10;
+    const almostW = lawnTemp >= 8;
+    const dry     = rain3 < 15;
+    const damp    = rain3 < 30;
+
+    if (warm && dry)         return { cls:'ready',   word:'READY',   reason:'Soil temperature is above the 10 °C threshold and recent rainfall is within acceptable limits. Conditions are favourable for verticulation.' };
+    if (warm && !dry && damp)return { cls:'too-wet', word:'TOO WET', reason:'Temperature is sufficient, but the soil has received significant recent rainfall. Wait two or three days for it to drain before proceeding.' };
+    if (warm && !damp)       return { cls:'too-wet', word:'TOO WET', reason:'Despite adequate temperature, heavy recent precipitation has saturated the soil. Verticulating now risks damaging the turf structure.' };
+    if (almostW && dry)      return { cls:'almost',  word:'ALMOST',  reason:'The lawn is nearly ready. Soil temperature is approaching the minimum — a few more days of mild weather should bring it above 10 °C.' };
+    if (almostW && damp)     return { cls:'almost',  word:'ALMOST',  reason:'Borderline temperature and damp conditions. Monitor both soil warmth and drainage over the coming days.' };
+    return { cls:'not-yet', word:'NOT YET', reason:`Soil is still too cold at an estimated ${fmtT(lawnTemp)}. Verticulation requires soil temperature above 10 °C to avoid stressing dormant grass.` };
+  }
+
+  /* ── forecast HTML ── */
+  function buildForecastHTML(fcDays, currentLawnTemp) {
+    const WEEKDAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const MONTHS   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    // Find first day the lawn crosses 10°C
+    const firstReady = fcDays.find(d => d.lawnTemp >= 10);
+    let introLine;
+    if (currentLawnTemp >= 10) {
+      introLine = `<strong>Already above threshold.</strong> Watch the forecast for rain.`;
+    } else if (firstReady) {
+      const fd = new Date(firstReady.date + 'T12:00:00');
+      const dayName = WEEKDAYS[fd.getDay()];
+      const dateStr = `${fd.getDate()} ${MONTHS[fd.getMonth()]}`;
+      introLine = `Projected to cross 10 °C on <strong>${dayName}, ${dateStr}</strong> — if the forecast holds.`;
+    } else {
+      introLine = `Soil is not projected to reach 10 °C within the next 7 days.`;
+    }
+
+    const cards = fcDays.map((day, i) => {
+      const d       = new Date(day.date + 'T12:00:00');
+      const weekday = WEEKDAYS[d.getDay()];
+      const dateStr = `${d.getDate()}/${d.getMonth()+1}`;
+      const cls     = day.lawnTemp >= 10 ? 'warm' : day.lawnTemp >= 7 ? 'cool' : 'cold';
+      const isReady = day.lawnTemp >= 10;
+      const prev    = i === 0 ? currentLawnTemp : fcDays[i-1].lawnTemp;
+      const trend   = day.lawnTemp > prev + 0.15 ? '↑' : day.lawnTemp < prev - 0.15 ? '↓' : '·';
+
+      return `
+        <div class="fc-day${isReady ? ' ready' : ''}">
+          <div class="fc-weekday">${weekday}</div>
+          <div class="fc-date">${dateStr}</div>
+          <div class="fc-lawn ${cls}">${fmtT(day.lawnTemp)}<span class="fc-trend">${trend}</span></div>
+          <div class="fc-air">${fmtT(day.tmin)}–${fmtT(day.tmax)}<br>air</div>
+          ${isReady ? '<div class="fc-badge">ready</div>' : ''}
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="forecast-intro">
+        <div class="forecast-intro-label">7-day lawn temp projection</div>
+        <div class="forecast-intro-line">${introLine}</div>
+      </div>
+      <div class="forecast-scroll">
+        <div class="forecast-grid">${cards}</div>
+      </div>`;
+  }
+
+  /* ── render ── */
+  function render([raw, fcRaw]) {
+    const { days, lawnTemp, avgAir, rain3, rain14 } = process(raw);
+    const v = verdict(lawnTemp, rain3);
+    const [hl1, hl2] = wittyLine(v.cls, lawnTemp, rain3);
+    const fcDays = processForecast(days, fcRaw);
+
+    // chart
+    const means = days.map(d => d.tmean);
+    const lo    = Math.min(...means);
+    const hi    = Math.max(...means);
+    const span  = (hi - lo) || 1;
+    const HMAX  = 66; // px
+    const HMIN  = 6;
+
+    const bars = days.map(d => {
+      const h   = Math.round(HMIN + ((d.tmean - lo) / span) * (HMAX - HMIN));
+      const cls = d.tmean >= 10 ? 'warm' : d.tmean >= 5 ? 'cool' : 'cold';
+      const tip = `${d.date}: ${fmtT(d.tmean)}`;
+      return `<div class="bar-unit"><div class="bar ${cls}" style="height:${h}px" title="${tip}"></div></div>`;
+    }).join('');
+
+    const dateLabels = days.map(d => {
+      const [,m,day] = d.date.split('-');
+      return `<div class="chart-date">${parseInt(day)}/${parseInt(m)}</div>`;
+    }).join('');
+
+    const today = new Date();
+    const todayStr = today.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+    const rangeStr = `${days[0].date}  →  ${days[days.length-1].date}`;
+
+    document.getElementById('app').innerHTML = `
+      <div class="page">
+
+        <header class="header">
+          <div class="header-vert">Verticulation Assessment</div>
+          <div>
+            <div class="header-eyebrow">Lawn Oracle &mdash; ${LOC}</div>
+            <h1 class="header-title">${hl1}<br><em>${hl2}</em></h1>
+            <div class="header-location">${LOC} &mdash; ${todayStr}</div>
+          </div>
+        </header>
+
+        <div class="temp-row">
+          <div class="temp-cell">
+            <div class="tc-label">Estimated Lawn Temp</div>
+            <div class="tc-value">${fmtT(lawnTemp)}</div>
+            <div class="tc-note">7-day weighted soil estimate</div>
+          </div>
+          <div class="temp-cell">
+            <div class="tc-label">14-day Air Mean</div>
+            <div class="tc-value">${fmtT(avgAir)}</div>
+            <div class="tc-note">Average of daily means</div>
+          </div>
+          <div class="temp-cell">
+            <div class="tc-label">Minimum for Verticulation</div>
+            <div class="tc-value">10.0°</div>
+            <div class="tc-note">Soil temperature threshold</div>
+          </div>
+        </div>
+
+        <hr class="rule">
+
+        <section class="verdict-section">
+          <div class="verdict-ghost">${v.word}</div>
+          <div class="verdict-eyebrow">Verticulation Readiness</div>
+          <div class="verdict-word ${v.cls}">${v.word}</div>
+          <div class="verdict-reason">${v.reason}</div>
+        </section>
+
+        <hr class="rule">
+
+        <section class="forecast-section">
+          ${buildForecastHTML(fcDays, lawnTemp)}
+        </section>
+
+        <hr class="rule">
+
+        <section class="chart-section">
+          <div class="chart-caption">14-day temperature record &mdash; daily mean</div>
+          <div class="chart-wrap">${bars}</div>
+          <div class="chart-dates">${dateLabels}</div>
+          <div class="threshold-line-label">
+            Bar colour: <span>green &ge; 10 °C</span> &nbsp;&middot;&nbsp; olive 5–10 °C &nbsp;&middot;&nbsp; brown &lt; 5 °C
+          </div>
+        </section>
+
+        <hr class="rule">
+
+        <section class="conditions">
+          <div class="cond">
+            <div class="cond-label">3-day Rainfall</div>
+            <div class="cond-val">${rain3.toFixed(0)}<span class="unit"> mm</span></div>
+            <div class="cond-note">${rain3 < 15 ? 'Adequately dry' : rain3 < 30 ? 'Moderately wet' : 'Heavily saturated'}</div>
+          </div>
+          <div class="cond">
+            <div class="cond-label">14-day Rainfall</div>
+            <div class="cond-val">${rain14.toFixed(0)}<span class="unit"> mm</span></div>
+            <div class="cond-note">Total over period</div>
+          </div>
+          <div class="cond">
+            <div class="cond-label">Temp vs. Threshold</div>
+            <div class="cond-val" style="color:${lawnTemp>=10?'var(--accent-ready)':'var(--accent-notyet)'}">
+              ${lawnTemp >= 10 ? '+' : ''}${(lawnTemp - 10).toFixed(1)}<span class="unit"> °C</span>
+            </div>
+            <div class="cond-note">${lawnTemp >= 10 ? 'Above minimum' : 'Below minimum'}</div>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <span>Source: Open-Meteo Archive API</span>
+          <span>${rangeStr}</span>
+        </footer>
+
+      </div>
+    `;
+
+    document.title = `${v.word} — Lawn Oracle`;
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+  }
+
+  function renderError(err) {
+    document.getElementById('app').innerHTML = `
+      <div class="error-wrap">
+        <div class="err-title">Lawn Oracle</div>
+        <div class="err-msg">Failed to retrieve data &mdash; ${err.message}</div>
+      </div>
+    `;
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+  }
+
+  Promise.all([fetchWeather(), fetchForecast()]).then(render).catch(renderError);
+</script>
+</body>
+</html>
