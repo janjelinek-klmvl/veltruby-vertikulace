@@ -216,15 +216,19 @@
       color: var(--muted);
       margin-bottom: 20px;
     }
+    .chart-scroll {
+      overflow-x: auto;
+      margin-bottom: 10px;
+    }
     .chart-wrap {
       display: flex;
       align-items: flex-end;
       gap: 4px;
       height: 72px;
-      margin-bottom: 10px;
     }
     .bar-unit {
       flex: 1;
+      min-width: 28px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -714,6 +718,19 @@
     }
     .rec-step-text { font-size: 13.5px; line-height: 1.5; }
 
+    /* ── SCROLL HINT ── */
+    @media (max-width: 620px) {
+      .scroll-hint-wrap { position: relative; }
+      .scroll-hint-wrap::after {
+        content: '';
+        position: absolute;
+        top: 0; right: 0;
+        width: 48px; height: 100%;
+        background: linear-gradient(to right, transparent, var(--bg));
+        pointer-events: none;
+      }
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 620px) {
       .page { padding: 36px 24px 80px; }
@@ -721,11 +738,13 @@
       .header-vert { display: none; }
       .temp-row { grid-template-columns: 1fr 1fr; }
       .temp-row .temp-cell:last-child { display: none; }
-      .conditions { grid-template-columns: 1fr 1fr; }
+      .conditions { grid-template-columns: 1fr; }
+      .cond-tile { min-height: 44px; }
       .profile-fields { grid-template-columns: 1fr; gap: 28px; }
       .condition-grid { grid-template-columns: repeat(2, 1fr); }
       .profile-summary { grid-template-columns: repeat(2, 1fr); }
       .recs-grid { grid-template-columns: 1fr; }
+      .footer { flex-direction: column; gap: 8px; align-items: flex-start; }
     }
   </style>
 </head>
@@ -941,8 +960,10 @@
         <div class="forecast-intro-label">7-day lawn temp projection</div>
         <div class="forecast-intro-line">${introLine}</div>
       </div>
-      <div class="forecast-scroll">
-        <div class="forecast-grid">${cards}</div>
+      <div class="scroll-hint-wrap">
+        <div class="forecast-scroll">
+          <div class="forecast-grid">${cards}</div>
+        </div>
       </div>`;
   }
 
@@ -1387,8 +1408,12 @@
 
         <section class="chart-section">
           <div class="chart-caption">14-day temperature record &mdash; daily mean</div>
-          <div class="chart-wrap">${bars}</div>
-          <div class="chart-dates">${dateLabels}</div>
+          <div class="scroll-hint-wrap">
+            <div class="chart-scroll">
+              <div class="chart-wrap">${bars}</div>
+              <div class="chart-dates">${dateLabels}</div>
+            </div>
+          </div>
           <div class="threshold-line-label">
             Bar colour: <span>green &ge; 10 °C</span> &nbsp;&middot;&nbsp; olive 5–10 °C &nbsp;&middot;&nbsp; brown &lt; 5 °C
           </div>
